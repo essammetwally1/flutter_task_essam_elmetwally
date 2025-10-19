@@ -5,6 +5,7 @@ class AppTheme {
   static const Color lightred = Color(0xFFFFDBDB);
 
   static const Color darkgrey = Color(0xFF090F1F);
+  static const Color green = Color(0xFF3A813F);
   static const Color grey = Colors.grey;
 
   static const Color white = Color(0xFFFFFFFF);
@@ -74,7 +75,11 @@ class AppTheme {
         borderSide: BorderSide(color: primary),
       ),
     ),
-
+    tabBarTheme: TabBarThemeData(
+      tabAlignment: TabAlignment.start,
+      dividerColor: Colors.transparent,
+      indicatorColor: Colors.transparent,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: blue,

@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 4),
             SizedBox(
-              height: 20, // fixed height keeps layout stable
+              height: 20,
               child: Center(
                 child: AnimatedDefaultTextStyle(
                   duration: const Duration(milliseconds: 250),
