@@ -4,14 +4,15 @@ class AppTheme {
   static const Color primary = Color(0xFFFF4144);
   static const Color lightred = Color(0xFFFFDBDB);
 
-  static const Color grey = Color(0xFF090F1F);
+  static const Color darkgrey = Color(0xFF090F1F);
+  static const Color grey = Colors.grey;
 
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF090F1F);
   static const Color blue = Color(0xFF0079FE);
 
-  static ThemeData lightTheme = ThemeData();
-  static ThemeData dartTheme = ThemeData(
+  static ThemeData dartTheme = ThemeData();
+  static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: white,
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
@@ -35,29 +36,29 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: EdgeInsets.all(20),
       filled: true,
-      fillColor: grey,
       hintStyle: TextStyle(
         fontSize: 16,
         color: grey,
         fontWeight: FontWeight.w400,
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: grey),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: grey),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: primary),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: primary),
       ),
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: blue,

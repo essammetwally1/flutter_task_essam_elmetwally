@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_task_essam_elmetwally/components/custom_elevated_button.dart';
+import 'package:flutter_task_essam_elmetwally/components/custom_text_field.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = '/home';
@@ -7,13 +7,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: CustomElevatedButton(
-          textElevatedButton: 'شاهد 10,000+ نتائج',
-          onPressed: () {},
-        ),
-      ),
-    );
+    return Scaffold(body: Center(child: CustomTextFormField()));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_task_essam_elmetwally/app_theme.dart';
 import 'package:flutter_task_essam_elmetwally/screens/home_screen.dart';
 
 void main() {
@@ -14,6 +15,9 @@ class FlutterTask extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: HomeScreen.routeName,
       routes: {HomeScreen.routeName: (context) => HomeScreen()},
+      themeMode: ThemeMode.light,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.dartTheme,
     );
   }
 }
