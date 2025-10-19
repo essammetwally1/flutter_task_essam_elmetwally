@@ -29,8 +29,24 @@ class AppTheme {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 0,
       enableFeedback: false,
-      backgroundColor: grey,
+      backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
+      selectedItemColor: blue,
+      unselectedItemColor: grey,
+      showSelectedLabels: true,
+      showUnselectedLabels: true,
+      selectedIconTheme: const IconThemeData(size: 24),
+      unselectedIconTheme: const IconThemeData(size: 24),
+      unselectedLabelStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: darkgrey,
+      ),
+      selectedLabelStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: blue,
+      ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
