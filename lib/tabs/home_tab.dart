@@ -1,7 +1,11 @@
+// lib/screens/home_tab.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_task_essam_elmetwally/app_theme.dart';
 import 'package:flutter_task_essam_elmetwally/components/product_item.dart';
+import 'package:flutter_task_essam_elmetwally/models/product_model.dart';
+import 'package:flutter_task_essam_elmetwally/providers/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -11,10 +15,10 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  int _selectedIndex = 0;
+  late TabController tabController;
+  int selectedIndex = 0;
 
-  final List<String> _tabLabels = [
+  final List<String> tabLabels = [
     'كل العروض',
     'ملابس',
     'أكسسوارات',
@@ -22,21 +26,11 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     'أثاث',
     'ساعات',
   ];
+
   final List<String> images = [
     'assets/images/image1.png',
     'assets/images/image2.png',
     'assets/images/image3.png',
-    'assets/images/image4.png',
-    'assets/images/image5.png',
-    'assets/images/image6.png',
-  ];
-  final List<String> products = [
-    'assets/images/item1.png',
-    'assets/images/item2.png',
-    'assets/images/item3.png',
-    'assets/images/item1.png',
-    'assets/images/item2.png',
-    'assets/images/item3.png',
     'assets/images/image4.png',
     'assets/images/image5.png',
     'assets/images/image6.png',
@@ -54,24 +48,44 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabLabels.length, vsync: this);
-    _tabController.addListener(_handleTabSelection);
-  }
+    tabController = TabController(length: tabLabels.length, vsync: this);
 
-  void _handleTabSelection() {
-    setState(() {
-      _selectedIndex = _tabController.index;
+    tabController.addListener(() {
+      if (!tabController.indexIsChanging) {
+        selectedIndex = tabController.index;
+        final provider = Provider.of<ProductProvider>(context, listen: false);
+
+        final category = tabLabels[selectedIndex];
+        provider.filterByCategory(category);
+      }
+      setState(() {});
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final provider = Provider.of<ProductProvider>(context, listen: false);
+      if (provider.loading) {
+        while (provider.loading) {
+          await Future.delayed(const Duration(milliseconds: 50));
+        }
+      }
+      provider.filterByCategory('كل العروض');
     });
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    tabController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<ProductProvider>(context);
+    if (provider.loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final List<Product> productList = provider.filterdProducts;
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: Padding(
@@ -110,13 +124,16 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                 Directionality(
                   textDirection: TextDirection.rtl,
                   child: TabBar(
-                    controller: _tabController,
+                    controller: tabController,
                     isScrollable: true,
                     indicatorSize: TabBarIndicatorSize.tab,
                     labelPadding: const EdgeInsets.symmetric(horizontal: 4),
-                    tabs: _tabLabels.map((label) {
-                      final index = _tabLabels.indexOf(label);
-                      final isSelected = _selectedIndex == index;
+                    onTap: (value) {
+                      selectedIndex = value;
+                    },
+                    tabs: tabLabels.map((label) {
+                      final index = tabLabels.indexOf(label);
+                      final isSelected = selectedIndex == index;
                       return Tab(
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -165,8 +182,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           physics: const BouncingScrollPhysics(),
                           itemCount: images.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(width: 10),
+                          separatorBuilder: (_, __) => const SizedBox(width: 8),
                           itemBuilder: (context, index) {
                             return Column(
                               mainAxisSize: MainAxisSize.min,
@@ -204,7 +220,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
-                        vertical: 12,
+                        vertical: 6,
                       ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFfff7f4),
@@ -241,18 +257,11 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                             crossAxisSpacing: 10,
                             childAspectRatio: .45,
                           ),
-                      itemCount: products.length,
+                      itemCount: productList.length,
                       itemBuilder: (context, index) {
-                        // Use a reusable ProductItem widget
                         return ProductItem(
-                          imagePath: products[index],
-
-                          title:
-                              'جاكيت من الصوف مناسب للشتاء - تصميم مريح وعصري',
-                          price: '32,000,000 جم',
-                          oldPrice: '60 جم',
-                          soldCount: 'تم بيع 3.3k+',
-                          textTheme: textTheme,
+                          product: productList[index],
+                          onTap: () {},
                         );
                       },
                     ),
@@ -267,5 +276,3 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     );
   }
 }
-
-/// Reusable product card matching the UI in the screenshot.
