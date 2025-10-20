@@ -18,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 4;
 
-  // only create a controller for HomeTab (index 4)
   final ScrollController homeTabController = ScrollController();
 
   final List<Widget> pages = [

@@ -7,11 +7,11 @@ class OptionChips extends StatelessWidget {
   final ValueChanged<int> onSelected;
 
   const OptionChips({
-    Key? key,
+    super.key,
     required this.options,
     required this.selectedIndex,
     required this.onSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

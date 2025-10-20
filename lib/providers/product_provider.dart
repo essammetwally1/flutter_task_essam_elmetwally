@@ -139,22 +139,6 @@ class ProductProvider extends ChangeNotifier {
         soldCount: 'تم بيع 1.2k+',
         category: 'ملابس',
       ),
-      Product(
-        title: 'منتجات تجميل',
-        imagePath: 'assets/images/image6.png',
-        price: '12,000 جم',
-        oldPrice: '20,000 جم',
-        soldCount: 'تم بيع 900+',
-        category: 'منتجات تجميل',
-      ),
-      Product(
-        title: 'منتجات تجميل',
-        imagePath: 'assets/images/image6.png',
-        price: '12,000 جم',
-        oldPrice: '20,000 جم',
-        soldCount: 'تم بيع 900+',
-        category: 'منتجات تجميل',
-      ),
     ];
 
     for (final p in sample) {

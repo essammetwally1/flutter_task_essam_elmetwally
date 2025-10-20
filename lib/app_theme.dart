@@ -12,8 +12,8 @@ class AppTheme {
   static const Color black = Color(0xFF090F1F);
   static const Color blue = Color(0xFF0079FE);
 
-  static ThemeData dartTheme = ThemeData();
-  static ThemeData lightTheme = ThemeData(
+  static ThemeData lightTheme = ThemeData();
+  static ThemeData dartTheme = ThemeData(
     scaffoldBackgroundColor: white,
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,

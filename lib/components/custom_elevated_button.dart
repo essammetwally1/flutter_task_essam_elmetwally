@@ -7,6 +7,7 @@ class CustomElevatedButton extends StatelessWidget {
   final bool isLoading;
   final Color color;
   final TextStyle? textStyle;
+  final Widget? widget;
   const CustomElevatedButton({
     super.key,
     required this.textElevatedButton,
@@ -14,6 +15,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.isLoading = false,
     this.color = AppTheme.blue,
     this.textStyle,
+    this.widget,
   });
 
   @override
@@ -26,14 +28,20 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: onPressed,
       child: isLoading
           ? Center(child: CircularProgressIndicator(color: AppTheme.white))
-          : Text(
-              textElevatedButton,
-              style:
-                  textStyle ??
-                  TextTheme.of(context).titleMedium!.copyWith(
-                    color: AppTheme.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                widget == null ? SizedBox() : widget!,
+                Text(
+                  textElevatedButton,
+                  style:
+                      textStyle ??
+                      TextTheme.of(context).titleLarge!.copyWith(
+                        color: AppTheme.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
             ),
     );
   }

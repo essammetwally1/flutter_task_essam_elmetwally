@@ -26,7 +26,7 @@ class FlutterTask extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: HomeScreen.routeName,
         routes: {HomeScreen.routeName: (context) => HomeScreen()},
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.dark,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.dartTheme,
       ),

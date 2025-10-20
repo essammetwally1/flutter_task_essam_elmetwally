@@ -1,4 +1,3 @@
-// lib/components/product_item.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_task_essam_elmetwally/models/product_model.dart';
