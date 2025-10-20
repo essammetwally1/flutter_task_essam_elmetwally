@@ -26,7 +26,7 @@ class AppTheme {
       elevation: 0,
       scrolledUnderElevation: 0,
     ),
-    progressIndicatorTheme: ProgressIndicatorThemeData(color: primary),
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: blue),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       elevation: 0,
       enableFeedback: false,

@@ -41,6 +41,7 @@ class ProductItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
@@ -66,24 +67,40 @@ class ProductItem extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 6),
+
                       Row(
                         children: [
-                          Text(
-                            product.price,
-                            style: textTheme.titleSmall!.copyWith(
-                              color: AppTheme.primary,
-                              fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    product.price,
+                                    style: textTheme.titleSmall!.copyWith(
+                                      color: AppTheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                    ),
+                                    maxLines: 1,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Flexible(
+                                  child: Text(
+                                    product.oldPrice,
+                                    style: textTheme.titleSmall!.copyWith(
+                                      decoration: TextDecoration.lineThrough,
+                                      color: AppTheme.grey,
+                                      fontSize: 10,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            product.oldPrice,
-                            style: textTheme.bodySmall!.copyWith(
-                              decoration: TextDecoration.lineThrough,
-                              color: AppTheme.grey,
-                            ),
-                          ),
-                          const Spacer(),
                           SvgPicture.asset(
                             'assets/icons/love.svg',
                             width: 18,
@@ -92,6 +109,7 @@ class ProductItem extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 6),
+
                       Row(
                         children: [
                           SvgPicture.asset(
@@ -100,15 +118,21 @@ class ProductItem extends StatelessWidget {
                             height: 18,
                           ),
                           const SizedBox(width: 4),
-                          Text(
-                            product.soldCount,
-                            style: textTheme.bodySmall!.copyWith(
-                              color: AppTheme.black.withValues(alpha: .6),
+                          Expanded(
+                            child: Text(
+                              product.soldCount,
+                              style: textTheme.bodySmall!.copyWith(
+                                color: AppTheme.black.withValues(alpha: 0.6),
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
+
                       const Spacer(),
+
                       Row(
                         children: [
                           SvgPicture.asset(
@@ -132,7 +156,7 @@ class ProductItem extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Image.asset(
-                            'assets/images/logoimage.png',
+                            'assets/images/logo.png',
                             width: 28,
                             height: 28,
                             fit: BoxFit.contain,

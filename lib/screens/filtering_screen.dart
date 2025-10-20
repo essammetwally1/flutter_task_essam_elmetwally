@@ -6,6 +6,8 @@ import 'package:flutter_task_essam_elmetwally/app_theme.dart';
 import 'package:flutter_task_essam_elmetwally/components/custom_elevated_button.dart';
 import 'package:flutter_task_essam_elmetwally/components/custom_text_field.dart';
 import 'package:flutter_task_essam_elmetwally/components/option_chips.dart';
+import 'package:flutter_task_essam_elmetwally/screens/map_screen.dart';
+import 'package:flutter_task_essam_elmetwally/services/location_service.dart';
 
 class FilteringScreen extends StatefulWidget {
   const FilteringScreen({super.key});
@@ -31,6 +33,8 @@ class _FilteringScreenState extends State<FilteringScreen> {
   final TextEditingController textEditingController2 = TextEditingController();
   final TextEditingController textEditingController3 = TextEditingController();
   final TextEditingController textEditingController4 = TextEditingController();
+  String currentLocation = 'جاري الحصول على الموقع...';
+  bool _locationLoading = true;
 
   final List<OptionGroup> _groups = [
     OptionGroup(
@@ -55,11 +59,34 @@ class _FilteringScreenState extends State<FilteringScreen> {
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    final result = await LocationService.getCurrentLocationWithAddress();
+
+    setState(() {
+      _locationLoading = false;
+      if (result.isSuccess) {
+        currentLocation = result.address!;
+      } else {
+        currentLocation = 'تعذر الحصول على الموقع';
+      }
+    });
+  }
+
   void clearControllers() {
     textEditingController1.clear();
     textEditingController2.clear();
     textEditingController3.clear();
     textEditingController4.clear();
+    setState(() {
+      _locationLoading = true;
+      _getCurrentLocation();
+    });
   }
 
   @override
@@ -79,6 +106,7 @@ class _FilteringScreenState extends State<FilteringScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            // Fixed Header Section
             Row(
               children: [
                 const SizedBox(width: 16),
@@ -117,139 +145,196 @@ class _FilteringScreenState extends State<FilteringScreen> {
               ],
             ),
             const SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'الفئة',
-                        style: textTheme.titleMedium!.copyWith(
-                          color: AppTheme.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Text(
-                          'تغيير',
-                          style: textTheme.titleSmall!.copyWith(
-                            color: const Color(0xFF3B4CF2),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Column(
-                        children: [
-                          Text(
-                            'عقارات',
-                            style: textTheme.titleSmall!.copyWith(
-                              color: AppTheme.black,
-                            ),
-                          ),
-                          Text(
-                            'فلل البيع',
-                            style: textTheme.titleSmall!.copyWith(
-                              color: AppTheme.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 5),
-                      SvgPicture.asset('assets/icons/cars.svg'),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const Divider(color: AppTheme.grey, thickness: 1),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  const Icon(Icons.arrow_back_ios, size: 16),
-                  const Spacer(),
-                  Column(
-                    children: [
-                      Text(
-                        'الموقع',
-                        style: textTheme.titleSmall!.copyWith(
-                          color: AppTheme.black,
-                        ),
-                      ),
-                      Text(
-                        'مصر',
-                        style: textTheme.titleSmall!.copyWith(
-                          color: AppTheme.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 5),
-                  SvgPicture.asset(
-                    'assets/icons/location.svg',
-                    colorFilter: ColorFilter.mode(
-                      AppTheme.black,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const Divider(color: AppTheme.grey, thickness: 1),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'الأقساط الشهرية',
-                        style: textTheme.titleMedium!.copyWith(
-                          color: AppTheme.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 80,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextFormField(
-                            controller: textEditingController1,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: CustomTextFormField(
-                            controller: textEditingController2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
+            // Scrollable Content
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                'الفئة',
+                                style: textTheme.titleMedium!.copyWith(
+                                  color: AppTheme.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () {},
+                                child: Text(
+                                  'تغيير',
+                                  style: textTheme.titleSmall!.copyWith(
+                                    color: const Color(0xFF3B4CF2),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'عقارات',
+                                    style: textTheme.titleSmall!.copyWith(
+                                      color: AppTheme.black,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    'فلل البيع',
+                                    style: textTheme.titleSmall!.copyWith(
+                                      color: AppTheme.grey,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 5),
+                              SvgPicture.asset('assets/icons/cars.svg'),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(color: AppTheme.grey, thickness: 1),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MapScreen(),
+                                ),
+                              ).then((result) {
+                                if (result != null) {
+                                  setState(() {
+                                    currentLocation = result['address'];
+                                  });
+                                }
+                              });
+                            },
+                            icon: Icon(
+                              Icons.arrow_back_ios,
+                              size: 16,
+                              color: AppTheme.black.withValues(alpha: 0.5),
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'الموقع',
+                                  style: textTheme.titleSmall!.copyWith(
+                                    color: AppTheme.black,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                _locationLoading
+                                    ? const SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : Text(
+                                        currentLocation,
+                                        style: textTheme.titleSmall!.copyWith(
+                                          color: AppTheme.blue,
+                                          fontSize: 12,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.right,
+                                      ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          SvgPicture.asset(
+                            'assets/icons/location.svg',
+                            colorFilter: ColorFilter.mode(
+                              AppTheme.black,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                        ],
+                      ),
+                    ),
+                    const Divider(color: AppTheme.grey, thickness: 1),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                'الأقساط الشهرية',
+                                style: textTheme.titleMedium!.copyWith(
+                                  color: AppTheme.grey,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            height: 80,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: textEditingController1,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: CustomTextFormField(
+                                    controller: textEditingController2,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
                     const SizedBox(height: 8),
                     for (int i = 0; i < _groups.length; i++) ...[
                       const SizedBox(height: 8),
                       _buildSelectionSection(context, textTheme, _groups[i], i),
                     ],
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
@@ -263,6 +348,8 @@ class _FilteringScreenState extends State<FilteringScreen> {
                                 style: textTheme.titleMedium!.copyWith(
                                   color: AppTheme.grey,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
@@ -290,6 +377,7 @@ class _FilteringScreenState extends State<FilteringScreen> {
                         ],
                       ),
                     ),
+
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -302,6 +390,7 @@ class _FilteringScreenState extends State<FilteringScreen> {
                                   _groups[i].options[_groups[i].selectedIndex],
                           };
                           log('Selected filters: $selected');
+                          log('Current location: $currentLocation');
                         },
                       ),
                     ),
@@ -332,6 +421,8 @@ class _FilteringScreenState extends State<FilteringScreen> {
               Text(
                 group.title,
                 style: textTheme.titleMedium!.copyWith(color: AppTheme.grey),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

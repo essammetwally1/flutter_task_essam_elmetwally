@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   curve: Curves.easeInOut,
                   style: TextStyle(
                     color: isActive ? AppTheme.blue : AppTheme.darkgrey,
-                    fontSize: isActive ? 13 : 10,
+                    fontSize: isActive ? 10 : 8,
                     fontWeight: isActive ? FontWeight.bold : FontWeight.w400,
                   ),
                   child: Text(label),
