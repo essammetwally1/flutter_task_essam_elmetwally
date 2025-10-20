@@ -18,13 +18,30 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 4;
 
-  final List<Widget> _pages = const [
-    ProfileTab(),
-    AdsTab(),
-    AddadsTab(),
-    ChatTab(),
-    HomeTab(),
+  // only create a controller for HomeTab (index 4)
+  final ScrollController homeTabController = ScrollController();
+
+  final List<Widget> _pages = [
+    const ProfileTab(),
+    const AdsTab(),
+    const AddadsTab(),
+    const ChatTab(),
+    HomeTab(scrollController: null),
   ];
+
+  List<Widget> get _builtPages => [
+    const ProfileTab(),
+    const AdsTab(),
+    const AddadsTab(),
+    const ChatTab(),
+    HomeTab(scrollController: homeTabController),
+  ];
+
+  @override
+  void dispose() {
+    homeTabController.dispose();
+    super.dispose();
+  }
 
   BottomNavigationBarItem buildItem({
     required int index,
@@ -62,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   curve: Curves.easeInOut,
                   style: TextStyle(
                     color: isActive ? AppTheme.blue : AppTheme.darkgrey,
-                    fontSize: isActive ? 12 : 10,
+                    fontSize: isActive ? 13 : 10,
                     fontWeight: isActive ? FontWeight.bold : FontWeight.w400,
                   ),
                   child: Text(label),
@@ -79,13 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.white,
-      body: SafeArea(child: _pages[selectedIndex]),
+      body: SafeArea(child: _builtPages[selectedIndex]),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppTheme.white,
-          border: Border(
-            top: BorderSide(color: Colors.grey.shade300, width: 1),
-          ),
+          border: Border(top: BorderSide(color: AppTheme.grey, width: 1)),
         ),
         child: SafeArea(
           child: BottomNavigationBar(
@@ -93,7 +108,20 @@ class _HomeScreenState extends State<HomeScreen> {
             elevation: 0,
             type: BottomNavigationBarType.fixed,
             currentIndex: selectedIndex,
-            onTap: (index) => setState(() => selectedIndex = index),
+            onTap: (index) {
+              const homeIndex = 4;
+              if (index == selectedIndex && index == homeIndex) {
+                if (homeTabController.hasClients) {
+                  homeTabController.animateTo(
+                    0.0,
+                    duration: const Duration(milliseconds: 350),
+                    curve: Curves.easeOut,
+                  );
+                }
+                return;
+              }
+              setState(() => selectedIndex = index);
+            },
             showSelectedLabels: false,
             showUnselectedLabels: false,
             items: [

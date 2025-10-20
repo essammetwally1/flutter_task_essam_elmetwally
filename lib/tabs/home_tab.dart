@@ -8,7 +8,8 @@ import 'package:flutter_task_essam_elmetwally/providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  final ScrollController? scrollController;
+  const HomeTab({super.key, this.scrollController});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
@@ -170,6 +171,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
 
             Expanded(
               child: SingleChildScrollView(
+                controller: widget.scrollController,
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
