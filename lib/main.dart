@@ -16,9 +16,7 @@ class FlutterTask extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ProductProvider()
-            ..clearAllProducts()
-            ..loadProducts(),
+          create: (_) => ProductProvider()..loadProducts(),
         ),
       ],
       child: MaterialApp(

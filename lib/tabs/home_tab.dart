@@ -146,7 +146,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
-                            vertical: 12,
+                            vertical: 6,
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(

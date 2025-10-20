@@ -19,17 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 4;
 
   final ScrollController homeTabController = ScrollController();
+  final ScrollController profileTabController = ScrollController();
 
   final List<Widget> pages = [
-    const ProfileTab(),
+    const ProfileTab(scrollController: null),
     const AdsTab(),
     const AddadsTab(),
     const ChatTab(),
-    HomeTab(scrollController: null),
+    const HomeTab(scrollController: null),
   ];
 
   List<Widget> get _builtPages => [
-    const ProfileTab(),
+    ProfileTab(scrollController: profileTabController),
     const AdsTab(),
     const AddadsTab(),
     const ChatTab(),
@@ -39,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     homeTabController.dispose();
+    profileTabController.dispose();
     super.dispose();
   }
 
@@ -109,6 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
             currentIndex: selectedIndex,
             onTap: (index) {
               const homeIndex = 4;
+              const profileIndex = 0;
+
+              // Handle scroll to top for Home tab
               if (index == selectedIndex && index == homeIndex) {
                 if (homeTabController.hasClients) {
                   homeTabController.animateTo(
@@ -119,6 +124,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
                 return;
               }
+
+              // Handle scroll to top for Profile tab
+              if (index == selectedIndex && index == profileIndex) {
+                if (profileTabController.hasClients) {
+                  profileTabController.animateTo(
+                    0.0,
+                    duration: const Duration(milliseconds: 350),
+                    curve: Curves.easeOut,
+                  );
+                }
+                return;
+              }
+
               setState(() => selectedIndex = index);
             },
             showSelectedLabels: false,

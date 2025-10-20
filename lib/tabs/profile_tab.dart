@@ -5,23 +5,30 @@ import 'package:flutter_task_essam_elmetwally/components/plan_card.dart';
 import 'package:flutter_task_essam_elmetwally/components/plan_row.dart';
 
 class ProfileTab extends StatefulWidget {
-  const ProfileTab({super.key});
+  final ScrollController? scrollController;
+
+  const ProfileTab({super.key, this.scrollController});
 
   @override
   State<ProfileTab> createState() => _ProfileTabState();
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  late TabController tabController;
   bool isSelectMainPlan = false;
   bool isSelectExtraPlan = true;
   bool isSelectPlusPlan = true;
   bool isSelectSuperPlan = false;
+
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       body: SingleChildScrollView(
+        controller: widget.scrollController,
+        physics: const BouncingScrollPhysics(),
+
         child: Column(
           children: [
             Column(
