@@ -43,8 +43,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         context,
       ).textTheme.titleLarge!.copyWith(color: AppTheme.primary),
       decoration: InputDecoration(
+        fillColor: Colors.transparent,
         hintText: widget.hintText,
-        contentPadding: EdgeInsets.all(16),
       ),
     );
   }

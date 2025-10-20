@@ -5,6 +5,7 @@ import 'package:flutter_task_essam_elmetwally/app_theme.dart';
 import 'package:flutter_task_essam_elmetwally/components/product_item.dart';
 import 'package:flutter_task_essam_elmetwally/models/product_model.dart';
 import 'package:flutter_task_essam_elmetwally/providers/product_provider.dart';
+import 'package:flutter_task_essam_elmetwally/screens/filtering_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
@@ -98,7 +99,15 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return FilteringScreen();
+                            },
+                          ),
+                        );
+                      },
                       icon: Icon(
                         Icons.arrow_back,
                         color: AppTheme.black.withValues(alpha: .5),

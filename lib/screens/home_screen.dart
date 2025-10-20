@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // only create a controller for HomeTab (index 4)
   final ScrollController homeTabController = ScrollController();
 
-  final List<Widget> _pages = [
+  final List<Widget> pages = [
     const ProfileTab(),
     const AdsTab(),
     const AddadsTab(),
