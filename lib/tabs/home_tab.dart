@@ -6,6 +6,7 @@ import 'package:flutter_task_essam_elmetwally/components/product_item.dart';
 import 'package:flutter_task_essam_elmetwally/models/product_model.dart';
 import 'package:flutter_task_essam_elmetwally/providers/product_provider.dart';
 import 'package:flutter_task_essam_elmetwally/screens/filtering_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class HomeTab extends StatefulWidget {
@@ -46,6 +47,56 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
     'منتجات تجميل',
     'منتجات تجميل',
   ];
+  Future<void> _ensureLocationAndNavigate(BuildContext context) async {
+    final status = await Permission.locationWhenInUse.status;
+
+    if (status.isGranted) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => FilteringScreen()));
+      return;
+    }
+
+    final result = await Permission.locationWhenInUse.request();
+
+    if (result.isGranted) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (_) => FilteringScreen()));
+      return;
+    }
+
+    if (result.isPermanentlyDenied) {
+      final open = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Permission required'),
+          content: const Text(
+            'Location permission is permanently denied. Go to app settings to enable it.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: const Text('Open Settings'),
+            ),
+          ],
+        ),
+      );
+
+      if (open == true) await openAppSettings();
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Location permission denied — cannot continue.'),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -99,20 +150,13 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return FilteringScreen();
-                            },
-                          ),
-                        );
-                      },
+                      onPressed: () => _ensureLocationAndNavigate(context),
                       icon: Icon(
                         Icons.arrow_back,
                         color: AppTheme.black.withValues(alpha: .5),
                       ),
                     ),
+
                     Text(
                       'الكل',
                       style: textTheme.titleMedium!.copyWith(
