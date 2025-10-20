@@ -36,8 +36,8 @@ A Flutter application featuring advanced navigation, category filtering, interac
 
 ## 📱 Screenshots
 
-| Home Screen | Category Filtering | Map Location Picker | Component Library |
-|-------------|-------------------|---------------------|-------------------|
-| <img src="assets/home.jpg" width="200"> | <img src="assets/categories.jpg" width="200"> | <img src="assets/map.jpg" width="200"> | <img src="assets/components.jpg" width="200"> |
+| Home Screen | 
+|-------------|
+| <img src="assets/1.jpg" width="200"> 
 
 ## 🏗️ Project Structure
